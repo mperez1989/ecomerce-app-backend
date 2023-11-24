@@ -1,9 +1,10 @@
 const request = require('supertest');
 const app  = require('../app');
+require('../models')
 
 
-let token;
 let id;
+let token;
 
 beforeAll(async() => {
     const user = {
@@ -15,40 +16,42 @@ beforeAll(async() => {
     token = res.body.token
 })
 
-test('GET /categories', async () => { 
-    const res = await request(app).get('/categories');
+test('GET /products', async () => { 
+    const res = await request(app).get('/products');
     expect(res.status).toBe(200);
-    expect(res.body).toBeInstanceOf(Array);
+    expect(res.body).toBeInstanceOf(Array)
  });
 
- test('POST /categories', async () => { 
-    const category = {
-        name: "accesorios",
+ test('POST /products', async () => { 
+    const product = {
+        title: 'test title',
+        description: "description test",
+        brand: "claro",
+        price: 10.50
     }
     const res = await request(app)
-        .post('/categories')
-        .send(category)
+        .post('/products')
+        .send(product)
         .set('Authorization' , `Bearer ${token}`)
     id = res.body.id;
-
     expect(res.status).toBe(201);
     expect(res.body.id).toBeDefined();
-    expect(res.body.name).toBe(category.name)
-  });
+    expect(res.body.title).toBe(product.title);
+ });
 
-  test('PUT /categories/:id ', async () => {
-    const body = {name:'accesorio update'};
+ test('PUT /products/:id ', async () => {
+    const body = {title:'phone for more update'};
     const res = await request(app)
-        .put(`/categories/${id}`)
+        .put(`/products/${id}`)
         .send(body)
         .set('Authorization', `Bearer ${token}`)
     expect(res.status).toBe(200);
-    expect(res.body.name).toBe(body.name);
+    expect(res.body.title).toBe(body.title);
 });
 
-  test('DELETE /categories/:id', async () => { 
+ test('DELETE /products/:id', async () => { 
     const res = await request(app)
-        .delete(`/categories/${id}`)
+        .delete(`/products/${id}`)
         .set('Authorization' , `Bearer ${token}`)
     expect(res.status).toBe(204)
-   })
+  })
