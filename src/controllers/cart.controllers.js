@@ -10,6 +10,7 @@ const getAll = catchError(async(req, res) => {
         include: [{
             model: Product,
             include: [Image],
+            
         }]
     });
     return res.json(results);
