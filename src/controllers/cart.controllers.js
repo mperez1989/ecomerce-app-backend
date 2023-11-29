@@ -1,7 +1,8 @@
 const catchError = require('../utils/catchError');
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
-const Image = require("../models/Image")
+const Image = require('../models/Image');
+
 
 const getAll = catchError(async(req, res) => {
     const results = await Cart.findAll({
@@ -15,10 +16,10 @@ const getAll = catchError(async(req, res) => {
 });
 
 const create = catchError(async(req, res) => {
-    const { ProductId, quantity} = req.body;
+    const { productId, quantity} = req.body;
     const userId = req.user.id;
     const result = await Cart.create({
-        ProductId,
+        productId,
         quantity,
         userId,
     });
